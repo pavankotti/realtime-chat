@@ -1,0 +1,27 @@
+{
+  "name": "live-chat-server",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-async-handler": "^1.2.0",
+    "ioredis": "^5.8.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.0.0",
+    "mongoose": "^9.0.2",
+    "nodemon": "^3.1.11",
+    "postgres": "^3.4.7",
+    "socket.io": "^4.8.3"
+  }
+}
