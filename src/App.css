@@ -1,0 +1,80 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-body: var(--bg-body);
+  --color-container: var(--bg-container);
+  --color-panel: var(--bg-panel);
+  --color-panel-hover: var(--bg-panel-hover);
+  --color-panel-active: var(--bg-panel-active);
+  --color-input: var(--bg-input);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-icon: var(--text-icon);
+  --color-border-subtle: var(--border-subtle);
+}
+
+:root {
+  --bg-body: #e5e7eb;
+  --bg-container: #f3f4f6;
+  --bg-panel: #ffffff;
+  --bg-panel-hover: #f3f4f6;
+  --bg-panel-active: #e5e7eb;
+  --bg-input: #ffffff;
+
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-icon: #6b7280;
+
+  --border-subtle: #e5e7eb;
+}
+
+.dark {
+  --bg-body: #111b21;
+  --bg-container: #202c33;
+  --bg-panel: #2a3942;
+  --bg-panel-hover: #374248;
+  --bg-panel-active: #374248;
+  --bg-input: #2a3942;
+
+  --text-primary: #e9edef;
+  --text-secondary: #8696a0;
+  --text-icon: #aebac1;
+
+  --border-subtle: #37404a;
+}
+
+body {
+  background-color: var(--bg-body);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+input {
+  color: var(--text-primary);
+}
+.MuiSvgIcon-root {
+  color: var(--text-icon);
+}
+
+@layer utilities {
+  .shadow-elevated {
+    box-shadow:
+      rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+      rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  }
+
+  .dark .shadow-elevated {
+    box-shadow:
+      rgba(0, 0, 0, 0.4) 0px 10px 15px -3px,
+      rgba(0, 0, 0, 0.2) 0px 4px 6px -2px;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
