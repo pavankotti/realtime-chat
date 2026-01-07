@@ -59,8 +59,7 @@ export const loginController = expressAsyncHandler(async (req, res) => {
 
     const user = await UserModel.findOne({ name });
 
-    console.log("fetched data", user);
-    console.log(await user.matchPassword(password));
+
 
     if (user && (await user.matchPassword(password))) {
         res.json({

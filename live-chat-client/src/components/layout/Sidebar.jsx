@@ -17,6 +17,7 @@ function Sidebar({ conversations, onSelectConversation, activeConversation, onCr
 
   const userData = JSON.parse(localStorage.getItem("userInfo"));
 
+  // Redirect if not logged in
   useEffect(() => {
     if (!userData) {
       console.log("User not authenticated");
@@ -24,7 +25,8 @@ function Sidebar({ conversations, onSelectConversation, activeConversation, onCr
     }
   }, [userData, navigate]);
 
-  // Fetch users (with optional search)
+
+
   useEffect(() => {
     if (!userData) return;
 
@@ -36,7 +38,6 @@ function Sidebar({ conversations, onSelectConversation, activeConversation, onCr
           }
         };
 
-        // Append search query if exists
         const url = search
           ? `${import.meta.env.VITE_API_URL}/api/user/fetchUsers?search=${search}`
           : `${import.meta.env.VITE_API_URL}/api/user/fetchUsers`;
@@ -54,7 +55,6 @@ function Sidebar({ conversations, onSelectConversation, activeConversation, onCr
     fetchUsers();
   }, [userData?.token, navigate, search]);
 
-  // Handle clicking a user -> Create/Access Chat
   const handleUserClick = async (user) => {
     try {
       const config = {
@@ -64,31 +64,25 @@ function Sidebar({ conversations, onSelectConversation, activeConversation, onCr
         }
       };
 
-      // POST to access/create chat
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/chat`,
         { userId: user._id },
         config
       );
 
-      // Pass the FULL CHAT object to the parent
       onSelectConversation(data);
     } catch (error) {
       console.log("Error accessing chat:", error);
     }
   }
 
+  // Get Online Status from Redux Store
   const onlineUserIds = useSelector(state => state.liveUser.onlineUsers);
 
-  // Filter fetched users to find who is online
-  // Note: 'users' comes from fetchUsers API. 'onlineUserIds' comes from Socket/Redis.
   const activeOnlineUsers = users.filter(user => {
-    // console.log("Checking user:", user.name, user._id, "Online IDs:", onlineUserIds);
     return onlineUserIds.includes(String(user._id));
   });
-  // console.log("Active Online Users:", activeOnlineUsers);
 
-  // Handle clicking an online user from the top bar
   const handleOnlineUserClick = (user) => {
     const existing = conversations.find(
       c => !c.isGroup && c.name === user.name
@@ -97,14 +91,12 @@ function Sidebar({ conversations, onSelectConversation, activeConversation, onCr
     if (existing) {
       onSelectConversation(existing)
     } else {
-      // Reuse handleUserClick logic or create new
       handleUserClick(user);
     }
   }
 
   const checkUnread = (chat) => {
     if (!chat.latestMessage) return false;
-    // Handle population differences just in case (e.g. sender object vs id string)
     const senderId = chat.latestMessage.sender?._id || chat.latestMessage.sender;
     const isSender = senderId === userData?._id;
     return !isSender && chat.latestMessage.readBy && !chat.latestMessage.readBy.includes(userData?._id);

@@ -20,7 +20,7 @@ function SidebarHeader({ userData, onCreateGroup }) {
     };
 
     return (
-        <div className="hidden md:flex bg-panel rounded-2xl shadow p-3 justify-between items-center transition-colors">
+        <div className="flex bg-panel rounded-2xl shadow p-3 justify-between items-center transition-colors">
             <div className="flex items-center">
                 <IconButton>
                     <AccountCircleIcon />

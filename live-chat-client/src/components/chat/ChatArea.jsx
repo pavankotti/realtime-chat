@@ -150,9 +150,7 @@ function ChatArea({ conversation, onBack, userData, socket, onChatRead }) {
         }
       };
 
-      // Using DELETE method if route supports it, but our route is defined as PUT /remove in previous steps (check chatRoutes.js)
-      // Wait, in Step 1182 it was: router.route("/remove").put(protect, deleteChat);
-      // So use axios.put
+
 
       await axios.put(`${import.meta.env.VITE_API_URL}/api/chat/remove`, { chatId: conversation._id }, {
         headers: { Authorization: `Bearer ${userData?.token}` }

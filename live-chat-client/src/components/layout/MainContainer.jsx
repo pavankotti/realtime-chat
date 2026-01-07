@@ -2,14 +2,13 @@ import Sidebar from './Sidebar'
 import ChatArea from '../chat/ChatArea'
 import { useState, useEffect, useRef } from 'react'
 import CreateGroups from '../groups/CreateGroups'
-import NavigationRail from './NavigationRail'
 import { useDispatch, useSelector } from 'react-redux';
 import { setOnlineUsers } from '../../features/liveUserSlice';
 import io from "socket.io-client";
 import axios from 'axios';
 
 const ENDPOINT = import.meta.env.VITE_API_URL;
-var socket;
+var socket; // Global socket variable
 
 function MainContainer() {
 
@@ -27,9 +26,10 @@ function MainContainer() {
         try {
           const config = {
             headers: {
-              Authorization: `Bearer ${userData.token}`
+              Authorization: `Bearer ${userData.token}` // JWT Token
             }
           };
+          // Call Backend: GET /api/chat
           const { data } = await axios.get(`${ENDPOINT}/api/chat`, config);
           setConversations(data);
         } catch (error) {
@@ -42,6 +42,7 @@ function MainContainer() {
 
   useEffect(() => {
     if (userData) {
+      // 1. Establish Connection
       socket = io(ENDPOINT);
       socketRef.current = socket;
 
@@ -85,6 +86,7 @@ function MainContainer() {
     }
   }, [userData?.token]);
 
+
   const handleCreateGroup = async (groupName, usersJson) => {
     try {
       const config = {
@@ -93,15 +95,16 @@ function MainContainer() {
         },
       };
 
-      const { data } = await axios.post(`${ENDPOINT}/api/chat/group`,{
-          name: groupName,
-          users: usersJson,
-      },config);
-      // Add new group to top of list
+      const { data } = await axios.post(`${ENDPOINT}/api/chat/group`, {
+        name: groupName,
+        users: usersJson,
+      }, config);
+
+      // Update Local State (Immediate UI update)
       setConversations([data, ...conversations]);
       setActiveConversation(data);
 
-      // Emit to others
+      // Emit to Real-Time Server
       if (socketRef.current) {
         socketRef.current.emit("new group", data);
       }
@@ -114,10 +117,10 @@ function MainContainer() {
   return (
     <div className='flex gap-4 w-full h-full overflow-hidden'>
 
+
+
       <div className={`flex gap-4 h-full ${activeConversation ? 'hidden md:flex md:w-[35%] lg:w-[30%]' : 'w-full md:w-[35%] lg:w-[30%]'}`}>
-        <div className="md:hidden h-full">
-          <NavigationRail onCreateGroup={() => setShowCreateGroup(true)} />
-        </div>
+
         <Sidebar
           conversations={conversations}
           onSelectConversation={setActiveConversation}
@@ -126,6 +129,8 @@ function MainContainer() {
         />
       </div>
 
+      {/* RIGHT PANE: Chat Area (Messages) */}
+      {/* Visible on mobile ONLY if a chat is active */}
       <div className={`${activeConversation ? 'flex w-full' : 'hidden'} md:flex md:flex-1 h-full`}>
         <ChatArea
           conversation={activeConversation}
@@ -133,6 +138,7 @@ function MainContainer() {
           userData={userData}
           socket={socket}
           onChatRead={() => {
+            // Mark as read locally
             setConversations(prev => prev.map(c =>
               c._id === activeConversation._id && c.latestMessage ? {
                 ...c,

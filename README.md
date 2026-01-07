@@ -56,7 +56,7 @@ Want to try it out? Here is how you can get it up and running on your machine.
    cd live-chat-server
    npm install
    # You'll need a .env file here (PORT, MONGO_URI, JWT_SECRET)
-   # npm start`
+   npm start
    ```
 
 3. **Client Setup**
