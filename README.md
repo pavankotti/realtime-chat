@@ -24,7 +24,7 @@ I used **React.js** (Vite) for the frontend because speed matters.
 ### Server-Side
 The backend is a robust **Node.js** & **Express.js** API.
 - **MongoDB**: My database of choice for flexibility.
-- **Redis**: Integrated for caching and scaling websockets (optional but powerful).
+- **Redis**: Integrated for caching and scaling websockets(User's online status).
 - **Socket.io**: The engine behind the real-time magic.
 - **JWT**: For stateless, secure authentication.
 
