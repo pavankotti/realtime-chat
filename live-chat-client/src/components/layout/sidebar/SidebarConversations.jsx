@@ -14,7 +14,7 @@ function SidebarConversations({
 
     if (search) {
         return (
-            <div className="flex-1 overflow-y-auto no-scrollbar transition-colors">
+            <div className="flex-1 overflow-y-auto transition-colors">
                 {users.map((user) => {
                     if (user._id === userData?._id) return null;
                     return (
@@ -29,8 +29,9 @@ function SidebarConversations({
                     )
                 })}
                 {users.length === 0 && (
-                    <div className='text-center text-secondary text-sm mt-10'>
-                        No users found.
+                    <div className='flex flex-col items-center justify-center mt-16 text-secondary'>
+                        <span className="text-3xl mb-2">🔍</span>
+                        <p className="text-sm">No users found.</p>
                     </div>
                 )}
             </div>
@@ -46,7 +47,7 @@ function SidebarConversations({
         });
 
     return (
-        <div className="flex-1 overflow-y-auto no-scrollbar transition-colors">
+        <div className="flex-1 overflow-y-auto transition-colors">
             {filteredConversations.map((chat) => {
                 let chatName = chat.chatName;
                 if (!chat.isGroupChat) {
@@ -89,8 +90,9 @@ function SidebarConversations({
             })}
 
             {filteredConversations.length === 0 && (
-                <div className='text-center text-secondary text-sm mt-10'>
-                    No {tabValue === 0 ? "chats" : "groups"} found.
+                <div className='flex flex-col items-center justify-center mt-16 text-secondary'>
+                    <span className="text-3xl mb-2">{tabValue === 0 ? '💬' : '👥'}</span>
+                    <p className="text-sm">No {tabValue === 0 ? "chats" : "groups"} yet.</p>
                 </div>
             )}
         </div>

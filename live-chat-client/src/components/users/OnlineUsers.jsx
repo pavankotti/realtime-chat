@@ -1,39 +1,39 @@
+import { getAvatarGradient } from '../../utils/avatarColor';
+
 function OnlineUsers({ users, onUserClick }) {
   return (
-    <div className="bg-panel rounded-2xl shadow p-3 overflow-hidden transition-colors">
+    <div className="px-4 py-3 border-b border-border-subtle">
+      <p className="text-[11px] font-semibold uppercase tracking-wider text-secondary mb-2">
+        Online
+      </p>
 
-      <p className="text-xs text-secondary mb-2">Online</p>
-
-      <div className="flex gap-4 overflow-x-auto no-scrollbar max-w-full">
-
-        {users.map((user, index) => (
-          <div
-            onClick={() => onUserClick(user)}
-            key={user._id || user.id || index}
-            className="flex flex-col items-center min-w-16 shrink-0"
-          >
-            <div className="relative cursor-pointer">
-              <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-white">
-                {user.name.charAt(0)}
+      {users.length === 0 ? (
+        <p className="text-xs text-secondary italic">No one online right now</p>
+      ) : (
+        <div className="flex gap-3 overflow-x-auto no-scrollbar">
+          {users.map((user, index) => {
+            const gradient = getAvatarGradient(user.name || '');
+            return (
+              <div
+                onClick={() => onUserClick(user)}
+                key={user._id || user.id || index}
+                className="flex flex-col items-center gap-1 cursor-pointer group flex-shrink-0"
+              >
+                <div className="relative">
+                  <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center text-sm font-bold text-white`}>
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  {/* Pulsing online indicator */}
+                  <span className="absolute bottom-0 right-0 online-dot w-2.5 h-2.5 bg-emerald-400 border-2 border-panel rounded-full" />
+                </div>
+                <p className="text-[11px] text-secondary truncate max-w-[40px] group-hover:text-primary transition-colors">
+                  {user.name}
+                </p>
               </div>
-
-              <span className="
-                absolute bottom-0 right-0
-                w-3 h-3
-                bg-green-500
-                border-2 border-panel
-                rounded-full
-                transition-colors
-              " />
-            </div>
-
-            <p className="text-xs mt-1 truncate max-w-14 text-primary">
-              {user.name}
-            </p>
-          </div>
-        ))}
-
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   )
 }

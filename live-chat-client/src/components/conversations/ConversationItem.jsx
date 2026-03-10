@@ -1,3 +1,5 @@
+import { getAvatarGradient } from '../../utils/avatarColor';
+
 function ConversationItem({
   name,
   lastMessage,
@@ -6,35 +8,45 @@ function ConversationItem({
   isActive,
   unread
 }) {
+  const gradient = getAvatarGradient(name || '');
+
   return (
     <div
       onClick={onClick}
       className={`
-        grid grid-cols-[32px_minmax(0,1fr)_auto]
-        grid-rows-[auto_auto]
-        gap-x-3 gap-y-1
-        p-3
-        rounded-xl
-        cursor-pointer
-        transition-colors
-        ${isActive ? 'bg-panel-active' : 'hover:bg-panel-hover'}
+        animate-slide-in
+        flex items-center gap-3 px-4 py-3
+        cursor-pointer transition-all duration-200
+        border-l-2
+        ${isActive
+          ? 'bg-accent-light border-l-accent'
+          : 'border-l-transparent hover:bg-panel-hover hover:border-l-accent/30'}
       `}
     >
-      <div className="row-span-2 w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-white">
-        {name ? name.charAt(0).toUpperCase() : "?"}
+      {/* Avatar */}
+      <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center font-semibold text-sm text-white flex-shrink-0`}>
+        {name ? name.charAt(0).toUpperCase() : '?'}
       </div>
 
-      <p className={`truncate text-primary ${unread ? 'font-black' : 'font-semibold'}`}>
-        {name}
-      </p>
-
-      <p className={`text-[10px] justify-self-end whitespace-nowrap ${unread ? 'text-green-600 font-bold' : 'text-secondary'}`}>
-        {timestamp}
-      </p>
-
-      <p className={`col-start-2 col-end-4 text-sm truncate ${unread ? 'font-bold text-primary' : 'text-secondary'}`}>
-        {lastMessage}
-      </p>
+      {/* Content */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between mb-0.5">
+          <p className={`text-sm truncate ${unread ? 'font-bold text-primary' : 'font-semibold text-primary'}`}>
+            {name}
+          </p>
+          <p className={`text-[11px] flex-shrink-0 ml-2 ${unread ? 'text-accent font-semibold' : 'text-secondary'}`}>
+            {timestamp}
+          </p>
+        </div>
+        <div className="flex items-center justify-between">
+          <p className={`text-xs truncate ${unread ? 'font-medium text-primary' : 'text-secondary'}`}>
+            {lastMessage}
+          </p>
+          {unread && (
+            <span className="w-2 h-2 rounded-full bg-accent flex-shrink-0 ml-2" />
+          )}
+        </div>
+      </div>
     </div>
   )
 }

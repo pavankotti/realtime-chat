@@ -15,17 +15,20 @@ function App() {
 
   return (
     <div className="
+      font-sans
       flex justify-center items-center
       bg-body 
       min-h-screen
       transition-colors
     ">
       <div className="
-        flex gap-4
+        flex gap-0
         w-[95vw] h-[95vh] md:w-[90vw] md:h-[90vh]
         bg-container 
-        rounded-3xl p-3 md:p-4
-        shadow-elevated
+        rounded-2xl
+        ring-1 ring-border-subtle
+        shadow-2xl
+        overflow-hidden
         transition-colors
       ">
         <Routes>

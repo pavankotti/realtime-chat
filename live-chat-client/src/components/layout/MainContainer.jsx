@@ -115,11 +115,11 @@ function MainContainer() {
   }
 
   return (
-    <div className='flex gap-4 w-full h-full overflow-hidden'>
+    <div className='flex gap-0 w-full h-full overflow-hidden'>
 
 
 
-      <div className={`flex gap-4 h-full ${activeConversation ? 'hidden md:flex md:w-[35%] lg:w-[30%]' : 'w-full md:w-[35%] lg:w-[30%]'}`}>
+      <div className={`flex h-full border-r border-border-subtle ${activeConversation ? 'hidden md:flex md:w-[35%] lg:w-[30%]' : 'w-full md:w-[35%] lg:w-[30%]'}`}>
 
         <Sidebar
           conversations={conversations}
