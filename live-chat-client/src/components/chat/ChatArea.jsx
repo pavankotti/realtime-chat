@@ -123,7 +123,9 @@ function ChatArea({ conversation, onBack, userData, socket, onChatRead }) {
 
   if (!conversation) {
     return (
-      <Welcome />
+      <div className="flex flex-1">
+        <Welcome />
+      </div>
     )
   }
 
@@ -168,7 +170,7 @@ function ChatArea({ conversation, onBack, userData, socket, onChatRead }) {
   }
 
   return (
-    <div className="flex flex-col flex-1 gap-4 h-full">
+    <div className="flex flex-col flex-1 h-full overflow-hidden bg-panel">
 
       <ChatHeader
         chatName={chatName}

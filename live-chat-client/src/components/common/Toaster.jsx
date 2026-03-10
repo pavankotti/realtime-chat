@@ -15,17 +15,21 @@ export default function Toaster({ message, severity, open, handleClose }) {
                 maxWidth: { xs: '95%', md: '400px' },
                 left: { xs: '50%', md: 'auto' },
                 transform: { xs: 'translateX(-50%)', md: 'none' },
-                right: { xs: 'auto', md: 'auto' } // Let anchorOrigin handle desktop right
+                right: { xs: 'auto', md: 'auto' }
             }}
         >
             <Alert
                 severity={severity}
-                variant="outlined"
+                variant="filled"
                 sx={{
                     width: '100%',
-                    borderRadius: '10px',
-                    boxShadow: '0px 4px 10px rgba(0,0,0,0.1)',
-                    backgroundColor: 'white'
+                    borderRadius: '12px',
+                    border: 'none',
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                    backdropFilter: 'blur(8px)',
+                    fontFamily: 'Inter, sans-serif',
+                    fontWeight: 500,
+                    fontSize: '0.875rem',
                 }}
             >
                 {message}

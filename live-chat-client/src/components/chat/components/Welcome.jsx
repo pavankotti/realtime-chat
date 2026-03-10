@@ -1,24 +1,17 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 
 function Welcome() {
-  const isLight = useSelector(state => state.themeToggle.isLight)
-  // console.log(isLight)
   return (
-    <div className="
-      flex flex-col flex-1
-      items-center justify-center
-      bg-panel 
-      rounded-2xl
-      shadow
-      transition-colors
-    ">
-      <img src="/live-chat.png" alt="Welcome" className="w-72 mb-8 opacity-90 transition-opacity hover:opacity-100" />
-
-      <h2 className="text-2xl font-bold text-primary mb-2">Welcome to Live Chat</h2>
-      <p className="text-secondary text-base text-center max-w-md px-4 leading-relaxed">
-        Select a conversation from the sidebar to start chatting, or create a new group to hang out with friends.
-      </p>
+    <div className="flex-1 flex flex-col items-center justify-center bg-panel gap-4">
+      <div className="w-20 h-20 rounded-full bg-accent-light flex items-center justify-center">
+        <span className="text-4xl">💬</span>
+      </div>
+      <div className="text-center">
+        <h2 className="text-xl font-semibold text-primary mb-2">Welcome to LiveChat</h2>
+        <p className="text-sm text-secondary text-center max-w-xs leading-relaxed">
+          Select a conversation to start chatting, or search for someone new to connect with.
+        </p>
+      </div>
     </div>
   )
 }

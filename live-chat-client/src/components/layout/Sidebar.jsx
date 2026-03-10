@@ -104,7 +104,7 @@ function Sidebar({ conversations, onSelectConversation, activeConversation, onCr
 
 
   return (
-    <div className="flex flex-col flex-1 gap-4 overflow-hidden h-full">
+    <div className="flex flex-col h-full overflow-hidden bg-panel">
 
       <SidebarHeader userData={userData} onCreateGroup={onCreateGroup} />
 
@@ -112,7 +112,7 @@ function Sidebar({ conversations, onSelectConversation, activeConversation, onCr
 
       <OnlineUsers users={activeOnlineUsers} onUserClick={handleOnlineUserClick} />
 
-      <div className="bg-panel rounded-2xl shadow p-2 flex-1 flex flex-col overflow-hidden transition-colors">
+      <div className="flex-1 flex flex-col overflow-hidden">
         <SidebarTabs
           tabValue={tabValue}
           setTabValue={setTabValue}
