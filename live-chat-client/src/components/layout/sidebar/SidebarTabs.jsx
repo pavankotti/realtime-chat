@@ -11,14 +11,16 @@ function SidebarTabs({ tabValue, setTabValue, conversations, checkUnread }) {
                 onClick={() => setTabValue(0)}
                 className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                     tabValue === 0
-                        ? 'bg-panel text-primary shadow-sm'
+                        ? 'bg-accent text-white shadow-sm'
                         : 'text-secondary hover:text-primary'
                 }`}
             >
                 <ChatBubbleOutlineIcon sx={{ fontSize: 15 }} />
                 Chats
                 {unreadChats > 0 && (
-                    <span className="bg-red-500 text-white text-[10px] rounded-full px-1.5 leading-tight min-w-[18px] text-center">
+                    <span className={`text-[10px] rounded-full px-1.5 leading-tight min-w-[18px] text-center ${
+                        tabValue === 0 ? 'bg-white/25 text-white' : 'bg-red-500 text-white'
+                    }`}>
                         {unreadChats}
                     </span>
                 )}
@@ -27,14 +29,16 @@ function SidebarTabs({ tabValue, setTabValue, conversations, checkUnread }) {
                 onClick={() => setTabValue(1)}
                 className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                     tabValue === 1
-                        ? 'bg-panel text-primary shadow-sm'
+                        ? 'bg-accent text-white shadow-sm'
                         : 'text-secondary hover:text-primary'
                 }`}
             >
                 <GroupsOutlinedIcon sx={{ fontSize: 15 }} />
                 Groups
                 {unreadGroups > 0 && (
-                    <span className="bg-red-500 text-white text-[10px] rounded-full px-1.5 leading-tight min-w-[18px] text-center">
+                    <span className={`text-[10px] rounded-full px-1.5 leading-tight min-w-[18px] text-center ${
+                        tabValue === 1 ? 'bg-white/25 text-white' : 'bg-red-500 text-white'
+                    }`}>
                         {unreadGroups}
                     </span>
                 )}

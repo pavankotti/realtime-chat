@@ -4,7 +4,7 @@ function MessageOthers({ name, text, time }) {
   const gradient = getAvatarGradient(name || '');
 
   return (
-    <div className="flex justify-start px-4 mb-1 gap-2">
+    <div className="animate-msg flex justify-start px-4 mb-1 gap-2">
       <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center text-xs font-bold text-white flex-shrink-0 mt-1`}>
         {name ? name.charAt(0).toUpperCase() : '?'}
       </div>

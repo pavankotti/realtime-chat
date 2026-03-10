@@ -23,7 +23,8 @@ function OnlineUsers({ users, onUserClick }) {
                   <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center text-sm font-bold text-white`}>
                     {user.name.charAt(0).toUpperCase()}
                   </div>
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-panel rounded-full" />
+                  {/* Pulsing online indicator */}
+                  <span className="absolute bottom-0 right-0 online-dot w-2.5 h-2.5 bg-emerald-400 border-2 border-panel rounded-full" />
                 </div>
                 <p className="text-[11px] text-secondary truncate max-w-[40px] group-hover:text-primary transition-colors">
                   {user.name}

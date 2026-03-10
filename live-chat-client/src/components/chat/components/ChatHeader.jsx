@@ -19,12 +19,14 @@ function ChatHeader({ chatName, isGroupChat, onBack, onShowInfo, onDelete }) {
                 <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center font-bold text-white`}>
                     {chatName ? chatName.charAt(0).toUpperCase() : '?'}
                 </div>
-                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-panel rounded-full" />
+                {/* Pulsing online dot */}
+                <span className="absolute bottom-0 right-0 online-dot w-2.5 h-2.5 bg-emerald-400 border-2 border-panel rounded-full" />
             </div>
 
             <div className="flex-1 min-w-0">
                 <p className="font-semibold text-primary text-sm truncate">{chatName}</p>
-                <p className="text-xs text-secondary">
+                <p className="text-xs text-secondary flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
                     {isGroupChat ? "Group Chat" : "Online"}
                 </p>
             </div>

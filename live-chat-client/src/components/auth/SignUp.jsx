@@ -105,15 +105,18 @@ function SignUp() {
     return (
         <div className="flex w-full h-full">
 
-            {/* Left decorative panel */}
+            {/* Left decorative panel — animated floating circles */}
             <div className="hidden md:flex md:flex-col items-center justify-center md:w-[40%] relative overflow-hidden bg-gradient-to-br from-[#6366f1] to-[#818cf8]">
-                {/* Decorative blobs */}
-                <div className="absolute top-[-60px] left-[-60px] w-48 h-48 rounded-full bg-white/10" />
-                <div className="absolute bottom-[-40px] right-[-40px] w-64 h-64 rounded-full bg-white/10" />
-                <div className="absolute top-1/2 left-1/4 w-20 h-20 rounded-full bg-white/5" />
+                {/* Animated floating blobs */}
+                <div className="animate-float-1 absolute top-[-60px] left-[-60px] w-48 h-48 rounded-full bg-white/10" />
+                <div className="animate-float-2 absolute bottom-[-40px] right-[-40px] w-64 h-64 rounded-full bg-white/10" />
+                <div className="animate-float-3 absolute top-1/3 left-1/4 w-20 h-20 rounded-full bg-white/8" />
+                <div className="animate-float-4 absolute bottom-1/4 left-1/3 w-32 h-32 rounded-full bg-white/[0.06]" />
+                <div className="animate-float-1 absolute top-1/4 right-1/4 w-14 h-14 rounded-full bg-white/10" style={{ animationDelay: '3s' }} />
 
                 <div className="relative z-10 flex flex-col items-center text-center px-10">
-                    <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center mb-6 shadow-lg">
+                    {/* Glassy logo card */}
+                    <div className="glass w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
                         <span className="text-4xl">💬</span>
                     </div>
                     <h1 className="text-3xl font-bold text-white mb-3">LiveChat</h1>

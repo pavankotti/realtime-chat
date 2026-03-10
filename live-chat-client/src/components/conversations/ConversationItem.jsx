@@ -14,9 +14,13 @@ function ConversationItem({
     <div
       onClick={onClick}
       className={`
+        animate-slide-in
         flex items-center gap-3 px-4 py-3
-        cursor-pointer transition-all
-        ${isActive ? 'bg-panel-active' : 'hover:bg-panel-hover'}
+        cursor-pointer transition-all duration-200
+        border-l-2
+        ${isActive
+          ? 'bg-accent-light border-l-accent'
+          : 'border-l-transparent hover:bg-panel-hover hover:border-l-accent/30'}
       `}
     >
       {/* Avatar */}

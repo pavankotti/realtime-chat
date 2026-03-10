@@ -82,18 +82,25 @@ function LoginPage() {
     }
   }
 
+  const handleGuestLogin = () => {
+    setLoginStatus({ msg: "Use demo credentials: username 'guest', password 'guest123'", key: Math.random(), severity: "info" });
+  }
+
   return (
     <div className="flex w-full h-full">
 
-      {/* Left decorative panel */}
+      {/* Left decorative panel — animated floating circles */}
       <div className="hidden md:flex md:flex-col items-center justify-center md:w-[40%] relative overflow-hidden bg-gradient-to-br from-[#6366f1] to-[#818cf8]">
-        {/* Decorative blobs */}
-        <div className="absolute top-[-60px] left-[-60px] w-48 h-48 rounded-full bg-white/10" />
-        <div className="absolute bottom-[-40px] right-[-40px] w-64 h-64 rounded-full bg-white/10" />
-        <div className="absolute top-1/2 left-1/4 w-20 h-20 rounded-full bg-white/5" />
+        {/* Animated floating blobs */}
+        <div className="animate-float-1 absolute top-[-60px] left-[-60px] w-48 h-48 rounded-full bg-white/10" />
+        <div className="animate-float-2 absolute bottom-[-40px] right-[-40px] w-64 h-64 rounded-full bg-white/10" />
+        <div className="animate-float-3 absolute top-1/3 left-1/4 w-20 h-20 rounded-full bg-white/8" />
+        <div className="animate-float-4 absolute bottom-1/4 left-1/3 w-32 h-32 rounded-full bg-white/[0.06]" />
+        <div className="animate-float-1 absolute top-1/4 right-1/4 w-14 h-14 rounded-full bg-white/10" style={{ animationDelay: '3s' }} />
 
         <div className="relative z-10 flex flex-col items-center text-center px-10">
-          <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center mb-6 shadow-lg">
+          {/* Glassy logo card */}
+          <div className="glass w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
             <span className="text-4xl">💬</span>
           </div>
           <h1 className="text-3xl font-bold text-white mb-3">LiveChat</h1>
@@ -103,14 +110,14 @@ function LoginPage() {
         </div>
       </div>
 
-      {/* Right form panel */}
+      {/* Right form panel — soft drop-shadow card */}
       <div className="flex w-full md:w-[60%] items-center justify-center p-6 bg-container">
-        <div className="w-full max-w-sm">
+        <div className="w-full max-w-sm bg-container rounded-2xl p-8 shadow-[0_8px_40px_-8px_rgba(99,102,241,0.18)] ring-1 ring-border-subtle">
           <h2 className="text-3xl font-bold text-primary mb-1">Welcome back 👋</h2>
           <p className="text-secondary text-sm mb-8">Sign in to your account</p>
 
-          {/* Username input */}
-          <div className="flex items-center gap-3 bg-input rounded-xl px-4 py-3 mb-4 ring-1 ring-transparent focus-within:ring-accent transition-all">
+          {/* Username input with purple glow on focus */}
+          <div className="flex items-center gap-3 bg-input rounded-xl px-4 py-3 mb-4 ring-1 ring-transparent focus-within:ring-accent focus-glow transition-all">
             <PersonOutlineIcon sx={{ color: 'var(--text-icon)', fontSize: 20 }} />
             <input
               type="text"
@@ -123,8 +130,8 @@ function LoginPage() {
             />
           </div>
 
-          {/* Password input */}
-          <div className="flex items-center gap-3 bg-input rounded-xl px-4 py-3 mb-6 ring-1 ring-transparent focus-within:ring-accent transition-all">
+          {/* Password input with purple glow on focus */}
+          <div className="flex items-center gap-3 bg-input rounded-xl px-4 py-3 mb-6 ring-1 ring-transparent focus-within:ring-accent focus-glow transition-all">
             <LockOutlinedIcon sx={{ color: 'var(--text-icon)', fontSize: 20 }} />
             <input
               type={showPassword ? "text" : "password"}
@@ -144,6 +151,7 @@ function LoginPage() {
             </IconButton>
           </div>
 
+          {/* Sign In button — shimmer on hover via CSS */}
           <button
             onClick={loginHandler}
             disabled={loading}
@@ -166,6 +174,17 @@ function LoginPage() {
             <Link to="/signup" className="font-semibold text-accent hover:underline">
               Sign Up
             </Link>
+          </p>
+
+          {/* Guest / demo access */}
+          <p className="text-xs text-secondary mt-3 text-center">
+            Just browsing?{' '}
+            <button
+              onClick={handleGuestLogin}
+              className="text-accent/70 hover:text-accent underline underline-offset-2 transition-colors"
+            >
+              Continue as Guest
+            </button>
           </p>
         </div>
       </div>

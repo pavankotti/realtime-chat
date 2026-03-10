@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import DeleteIcon from '@mui/icons-material/Delete'
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { getAvatarGradient } from '../../utils/avatarColor'
@@ -15,8 +16,12 @@ function GroupInfo({ open, onClose, chat, userData, onUpdateGroup }) {
     const [search, setSearch] = useState('')
     const [searchResults, setSearchResults] = useState([])
     const [loading, setLoading] = useState(false)
+    const [leaveConfirm, setLeaveConfirm] = useState(false)
 
     const isGroupAdmin = chat.groupAdmin?._id === userData._id;
+
+    // Get online user IDs from Redux store
+    const onlineUserIds = useSelector(state => state.liveUser.onlineUsers);
 
     const handleSearch = async (query) => {
         setSearch(query);
@@ -109,6 +114,7 @@ function GroupInfo({ open, onClose, chat, userData, onUpdateGroup }) {
                     backgroundImage: 'none',
                     border: '1px solid var(--border-subtle)',
                     boxShadow: '0 25px 50px rgba(0,0,0,0.2)',
+                    animation: 'scaleIn 0.2s ease-out both',
                 }
             }}
         >
@@ -127,13 +133,14 @@ function GroupInfo({ open, onClose, chat, userData, onUpdateGroup }) {
                         <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${groupGradient} flex items-center justify-center text-white text-2xl font-bold mb-2`}>
                             {chat.chatName.charAt(0).toUpperCase()}
                         </div>
-                        <p className="text-secondary text-sm">Group • {chat.users.length} Members</p>
+                        <p className="font-semibold text-primary">{chat.chatName}</p>
+                        <p className="text-secondary text-sm">Group · {chat.users.length} Members</p>
                     </div>
 
                     {/* Add User Section (Admin Only) */}
                     {isGroupAdmin && (
                         <div className="flex flex-col gap-2">
-                            <div className="flex items-center bg-input rounded-xl px-3 py-2.5 ring-1 ring-transparent focus-within:ring-accent transition-all gap-2">
+                            <div className="flex items-center bg-input rounded-xl px-3 py-2.5 ring-1 ring-transparent focus-within:ring-accent focus-glow transition-all gap-2">
                                 <PersonAddIcon sx={{ color: 'var(--text-secondary)', fontSize: 18 }} />
                                 <input
                                     placeholder="Add user to group"
@@ -170,40 +177,83 @@ function GroupInfo({ open, onClose, chat, userData, onUpdateGroup }) {
                     {/* Member List */}
                     <div className="flex-1 overflow-y-auto flex flex-col gap-1">
                         <h3 className="font-semibold text-[11px] text-secondary uppercase tracking-wider mb-1">Members</h3>
-                        {chat.users.map(user => {
-                            const memberGradient = getAvatarGradient(user.name);
-                            const isAdmin = chat.groupAdmin._id === user._id;
-                            return (
-                                <div key={user._id} className="flex items-center justify-between p-2 rounded-xl hover:bg-panel-hover transition-colors">
-                                    <div className="flex items-center gap-2">
-                                        <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${memberGradient} flex items-center justify-center text-white text-xs font-bold`}>
-                                            {user.name.charAt(0).toUpperCase()}
+                        {(() => {
+                            // Build a Set of online IDs once for O(1) lookups
+                            const onlineSet = new Set(onlineUserIds.map(id => String(id)));
+                            return chat.users.map(user => {
+                                const memberGradient = getAvatarGradient(user.name);
+                                const isAdmin = chat.groupAdmin._id === user._id;
+                                const isOnline = onlineSet.has(String(user._id));
+                                return (
+                                    <div key={user._id} className="flex items-center justify-between p-2 rounded-xl hover:bg-panel-hover transition-colors">
+                                        <div className="flex items-center gap-2">
+                                            {/* Avatar with online/offline status dot */}
+                                            <div className="relative flex-shrink-0">
+                                                <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${memberGradient} flex items-center justify-center text-white text-xs font-bold`}>
+                                                    {user.name.charAt(0).toUpperCase()}
+                                                </div>
+                                                <span className={`absolute bottom-0 right-0 w-2 h-2 rounded-full border border-container ${isOnline ? 'bg-emerald-400' : 'bg-secondary/40'}`} />
+                                            </div>
+                                            <div className='flex flex-col'>
+                                                <span className="text-sm font-semibold text-primary flex items-center gap-1">
+                                                    {user.name}
+                                                    {user._id === userData._id && <span className="text-secondary font-normal text-xs">(You)</span>}
+                                                    {/* Admin crown icon */}
+                                                    {isAdmin && (
+                                                        <WorkspacePremiumIcon sx={{ fontSize: 13, color: '#f59e0b' }} />
+                                                    )}
+                                                </span>
+                                                <span className="text-xs text-secondary flex items-center gap-1">
+                                                    {isAdmin ? (
+                                                        <span className="text-amber-500 font-medium">Admin</span>
+                                                    ) : "Member"}
+                                                    <span className="opacity-50">·</span>
+                                                    <span className={isOnline ? 'text-emerald-500' : 'text-secondary/60'}>
+                                                        {isOnline ? 'Online' : 'Offline'}
+                                                    </span>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div className='flex flex-col'>
-                                            <span className="text-sm font-semibold text-primary">
-                                                {user.name} {user._id === userData._id && <span className="text-secondary font-normal">(You)</span>}
-                                            </span>
-                                            <span className="text-xs text-secondary">
-                                                {isAdmin ? "Admin" : "Member"}
-                                            </span>
-                                        </div>
-                                    </div>
 
-                                    {isGroupAdmin && user._id !== userData._id && (
-                                        <IconButton onClick={() => handleRemoveUser(user)} size="small" sx={{ color: '#f87171', '&:hover': { backgroundColor: 'rgba(248,113,113,0.1)' } }}>
-                                            <DeleteIcon fontSize="small" />
-                                        </IconButton>
-                                    )}
-                                </div>
-                            );
-                        })}
+                                        {isGroupAdmin && user._id !== userData._id && (
+                                            <IconButton onClick={() => handleRemoveUser(user)} size="small" sx={{ color: '#f87171', '&:hover': { backgroundColor: 'rgba(248,113,113,0.1)' } }}>
+                                                <DeleteIcon fontSize="small" />
+                                            </IconButton>
+                                        )}
+                                    </div>
+                                );
+                            });
+                        })()}
                     </div>
 
+                    {/* Leave Group — danger button with confirmation step */}
                     <div className="flex justify-end pt-2 border-t border-border-subtle">
-                        <button onClick={() => handleRemoveUser(userData)} className="flex items-center gap-2 text-red-400 hover:bg-red-500/10 px-3 py-1.5 rounded-lg transition-colors text-sm">
-                            <ExitToAppIcon fontSize="small" />
-                            Leave Group
-                        </button>
+                        {!leaveConfirm ? (
+                            <button
+                                onClick={() => setLeaveConfirm(true)}
+                                className="flex items-center gap-2 text-red-400 hover:bg-red-500/10 px-3 py-1.5 rounded-lg transition-colors text-sm font-medium"
+                            >
+                                <ExitToAppIcon fontSize="small" />
+                                Leave Group
+                            </button>
+                        ) : (
+                            <div className="flex items-center gap-2">
+                                <span className="text-xs text-secondary">Are you sure?</span>
+                                <button
+                                    onClick={() => setLeaveConfirm(false)}
+                                    className="text-xs text-secondary hover:text-primary px-2 py-1 rounded transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={() => { setLeaveConfirm(false); handleRemoveUser(userData); }}
+                                    className="flex items-center gap-1.5 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                                >
+                                    <ExitToAppIcon sx={{ fontSize: 14 }} />
+                                    Yes, Leave
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </DialogContent>

@@ -1,6 +1,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
+/* ─── Keyframe animations ─── */
+
+/* Floating circles on the auth left panel */
+@keyframes floatBubble {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  33%       { transform: translateY(-18px) scale(1.04); }
+  66%       { transform: translateY(-8px) scale(0.97); }
+}
+
+/* Pulsing ring around online indicator dots */
+@keyframes pulseRing {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  70%  { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Shimmer sweep across the Sign-In button */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+/* New-message fade + slide-up entrance */
+@keyframes msgFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Modal scale + fade in */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Sidebar list item slide-in from left */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
 @theme {
   /* Background tokens */
   --color-body: var(--bg-body);
@@ -133,7 +173,7 @@ input {
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-/* Primary gradient button */
+/* Primary gradient button with optional shimmer on hover */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -149,6 +189,28 @@ input {
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255,255,255,0.35) 50%,
+    transparent 80%
+  );
+  background-size: 200% auto;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.btn-primary:hover:not(:disabled)::after {
+  opacity: 1;
+  animation: shimmer 0.7s linear;
 }
 
 .btn-primary:hover:not(:disabled) {
@@ -197,5 +259,41 @@ a,
     box-shadow:
       rgba(0, 0, 0, 0.5) 0px 10px 30px -5px,
       rgba(0, 0, 0, 0.25) 0px 4px 10px -2px;
+  }
+
+  /* Purple glow on focus-within (applied to input wrapper divs) */
+  .focus-glow:focus-within {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+  }
+
+  /* Message entrance */
+  .animate-msg {
+    animation: msgFadeUp 0.25s ease-out both;
+  }
+
+  /* Modal entrance */
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out both;
+  }
+
+  /* Sidebar item entrance */
+  .animate-slide-in {
+    animation: slideInLeft 0.22s ease-out both;
+  }
+
+  /* Floating bubble */
+  .animate-float-1 { animation: floatBubble 6s ease-in-out infinite; }
+  .animate-float-2 { animation: floatBubble 8s ease-in-out infinite 1s; }
+  .animate-float-3 { animation: floatBubble 7s ease-in-out infinite 2s; }
+  .animate-float-4 { animation: floatBubble 9s ease-in-out infinite 0.5s; }
+
+  /* Online dot pulse ring */
+  .online-dot::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: #34d399;
+    animation: pulseRing 2s ease-out infinite;
   }
 }
